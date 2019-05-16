@@ -279,7 +279,6 @@ class ProgressBar():
         """ a separate process to show the timer's threads in a GUI
         """
         top2=tk.Toplevel(self.root, bg="lightyellow")
-        top2.iconbitmap(r'c:\Users\jaspe\PycharmProjects\testbed\bee.ico')
         top2.geometry("485x753+900+300")
         '''   BOOSTERS  '''
         # Wealth Clock
@@ -687,7 +686,6 @@ def joinThreads():
 
 def doubleTimer():
     root = tk.Tk()
-    root.iconbitmap(r'c:\Users\jaspe\PycharmProjects\testbed\bee.ico')
     PB = ProgressBar(root)
     root.mainloop()
 
