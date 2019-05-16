@@ -50,6 +50,11 @@ stick_list = [0, 0, 129600]
 '''    QUESTS   '''
 brownbear_list = [0, 0, 14400]
 blackbear_list = [0, 0, 3600]
+'''  SUMMONERS  '''
+honeystorm_list = [0, 0, 14400]
+sprout_list = [0, 0, 57600]
+# HoneyStorm
+# Sprout Summoner
 
 #all_lists = [wealth_list,field_list,blue_field_list,red_field_list,jelly_list,ant_list,king_list, ]
 
@@ -156,6 +161,13 @@ def print_time(threadName, delay, counter, timer):
         elif threadName == "Black Bear Quest":
             blackbear_list[0] = timer - blackbear_list[1]
             blackbear_list[1] += 1
+        # SUMMONERS
+        elif threadName == "Honey Storm":
+            honeystorm_list[0] = timer - honeystorm_list[1]
+            honeystorm_list[1] +=1
+        elif threadName == "Sprout Summoner":
+            sprout_list[0] = timer - sprout_list[1]
+            sprout_list[1] += 1
         else:
             print ("%s: %s" % (threadName, ": Can't find the time, sorry!"))
         counter += 1
@@ -255,13 +267,20 @@ class ProgressBar():
     def resetBlackbear(self):
         global blackbear_list;
         blackbear_list[1] = 0
+        '''  SUMMONERS  '''
+    def resetHoneystorm(self):
+        global honeystorm_list;
+        honeystorm_list[1] = 0
+    def resetSproutsummoner(self):
+        global sprout_list;
+        sprout_list[1] = 0
 
     def start_countdown(self):
         """ a separate process to show the timer's threads in a GUI
         """
         top2=tk.Toplevel(self.root, bg="lightyellow")
         top2.iconbitmap(r'c:\Users\jaspe\PycharmProjects\testbed\bee.ico')
-        top2.geometry("485x695+900+300")
+        top2.geometry("485x753+900+300")
         '''   BOOSTERS  '''
         # Wealth Clock
         self.label_wealth = tk.IntVar()
@@ -398,6 +417,17 @@ class ProgressBar():
         tk.Label(top2, text="Black Bear Quest", bg="teal", width=20, font=("Verdans", 15)).grid(column=0, row=41)
         tk.Label(top2, textvariable=self.label_blackbear, bg="teal", width=15, font=("Verdans", 15)).grid(column=1, row=41)
         tk.Button(top2, text="Restart", bg="teal", width=10, font=("Verdans", 10), command=self.resetBlackbear).grid(column=2, row=41)
+        '''    QUESTS   '''
+        self.label_honeystorm = tk.IntVar()
+        self.label_honeystorm.set(self.ctr)
+        tk.Label(top2, text="Honey Storm", bg="yellow", width=20, font=("Verdans", 15)).grid(column=0, row=50)
+        tk.Label(top2, textvariable=self.label_honeystorm, bg="yellow", width=15, font=("Verdans", 15)).grid(column=1, row=50)
+        tk.Button(top2, text="Restart", bg="yellow", width=10, font=("Verdans", 10), command=self.resetHoneystorm).grid(column=2, row=50)
+        self.label_sproutsummoner = tk.IntVar()
+        self.label_sproutsummoner.set(self.ctr)
+        tk.Label(top2, text="Sprout Summoner", bg="yellow", width=20, font=("Verdans", 15)).grid(column=0, row=51)
+        tk.Label(top2, textvariable=self.label_sproutsummoner, bg="yellow", width=15, font=("Verdans", 15)).grid(column=1, row=51)
+        tk.Button(top2, text="Restart", bg="yellow", width=10, font=("Verdans", 10), command=self.resetSproutsummoner).grid(column=2, row=51)
 
         if self.ctr > 0:
             self.update()
@@ -535,6 +565,15 @@ class ProgressBar():
                 self.label_blackbear.set((str("Ready")))
             else:
                 self.label_blackbear.set((str(datetime.timedelta(seconds=blackbear_list[0]))))
+            '''  SUMMONERS  '''
+            if honeystorm_list[0] < 1:
+                self.label_honeystorm.set((str("Ready")))
+            else:
+                self.label_honeystorm.set((str(datetime.timedelta(seconds=honeystorm_list[0]))))
+            if sprout_list[0] < 1:
+                self.label_sproutsummoner.set((str("Ready")))
+            else:
+                self.label_sproutsummoner.set((str(datetime.timedelta(seconds=sprout_list[0]))))
         else:
             ## sleep for one second to allow any remaining after() to execute
             ## can also use self.root.after_cancel(id)
@@ -577,6 +616,9 @@ def startThreads():
     '''    QUESTS   '''
     thread40 = myThread(1, "Brown Bear Quest", 1, brownbear_list[2])
     thread41 = myThread(1, "Black Bear Quest", 1, blackbear_list[2])
+    '''  SUMMONERS  '''
+    thread50 = myThread(1, "Honey Storm", 1, honeystorm_list[2])
+    thread51 = myThread(1, "Sprout Summoner", 1, sprout_list[2])
     # Start new Threads
     '''   BOOSTERS  '''
     thread0.start()
@@ -607,6 +649,9 @@ def startThreads():
     '''    QUESTS   '''
     thread40.start()
     thread41.start()
+    '''  SUMMONERS  '''
+    thread50.start()
+    thread51.start()
 
 
 
@@ -635,6 +680,8 @@ def joinThreads():
     thread32.join()
     thread40.join()
     thread41.join()
+    thread50.join()
+    thread51.join()
 
     print ("Exiting Main Thread")
 
