@@ -53,10 +53,13 @@ blackbear_list = [0, 0, 3600]
 '''  SUMMONERS  '''
 honeystorm_list = [0, 0, 14400]
 sprout_list = [0, 0, 57600]
-# HoneyStorm
-# Sprout Summoner
 
-#all_lists = [wealth_list,field_list,blue_field_list,red_field_list,jelly_list,ant_list,king_list, ]
+all_list = [wealth_list,field_list,blueberry_list,red_field_list,jelly_list,ant_list,blueberry_list,strawberry_list,
+          honey_list,treat_list,glue_list,ladybug_list, rhino_list, spider_list, mantis_list, scorpion_list,
+          werewolf_list, snail_list,cavemonster_list,king_list,tunnel_list, stick_list,brownbear_list,blackbear_list,
+          honeystorm_list, sprout_list]
+
+has_giftedVicious = 0
 
 class myThread (threading.Thread):
     def __init__(self, threadID, name, counter, timer):
@@ -176,16 +179,29 @@ class ProgressBar():
     def __init__(self, root):
         self.root=root
         self.root.title("Bee Swarm Simulator Timers")
-        self.root.geometry("150x50+900+100")
+        self.root.geometry("230x100+900+100")
         self.q = tk.StringVar()
         tk.Label(root, text="Auto-quit in: ", bg="yellow",
-                width=10).grid(row=0, column=0)
+                width=10).grid(row=3, column=0)
         tk.Label(root, textvariable=self.q, bg="yellow",
-                width=10).grid(row=0, column=1)
-        #tk.Button(self.root, text="Restart", bg="green",
-                  #command=self.root.destroy).grid(row=1, column=0)
+                width=10).grid(row=3, column=1)
+        tk.Button(self.root, text="Start Timers", bg="green",
+                  command=startThreads).grid(row=2, column=1)
         tk.Button(self.root, text="Quit", bg="red",
-                command=self.root.destroy).grid(row=1, column=1)
+                command=self.root.destroy).grid(row=2, column=0)
+        tk.Label(root, text="Gifted Vicious Bee?", bg="lightblue",
+                width=15).grid(row=0, column=0)
+        selected = tk.IntVar()
+        rad1 = tk.Radiobutton(root, text='No', value=0, variable=selected)
+        rad2 = tk.Radiobutton(root, text='Yes', value=1, variable=selected)
+        def clicked():
+            global has_giftedVicious
+            if selected.get() == 1:
+                has_giftedVicious = 1
+        btn = tk.Button(root, text="Apply", command=clicked)
+        rad1.grid(column=0, row=1)
+        rad2.grid(column=1, row=1)
+        btn.grid(column=2, row=1)
         self.ctr = 1000000
         self.update_label()
         self.start_countdown()
@@ -443,25 +459,21 @@ class ProgressBar():
                 self.label_wealth.set((str("Ready")))
             else:
                 self.label_wealth.set((str(datetime.timedelta(seconds=wealth_list[0]))))
-            self.ctr -= 1
             # Field Booster
             if field_list[0] < 1:
                 self.label_field.set((str("Ready")))
             else:
                 self.label_field.set((str(datetime.timedelta(seconds=field_list[0]))))
-            self.ctr -= 1
             # Blue Field Booster
             if blue_field_list[0] < 1:
                 self.label_bluefield.set((str("Ready")))
             else:
                 self.label_bluefield.set((str(datetime.timedelta(seconds=blue_field_list[0]))))
-            self.ctr -= 1
             # Red Field Booster
             if red_field_list[0] < 1:
                 self.label_redfield.set((str("Ready")))
             else:
                 self.label_redfield.set((str(datetime.timedelta(seconds=red_field_list[0]))))
-            self.ctr -= 1
             '''  DISPENSERS '''
             # Ant Ticket Dispenser
             if ant_list[0] < 1:
@@ -573,6 +585,7 @@ class ProgressBar():
                 self.label_sproutsummoner.set((str("Ready")))
             else:
                 self.label_sproutsummoner.set((str(datetime.timedelta(seconds=sprout_list[0]))))
+            self.ctr -= 1
         else:
             ## sleep for one second to allow any remaining after() to execute
             ## can also use self.root.after_cancel(id)
@@ -584,7 +597,16 @@ class ProgressBar():
         if self.ctr > 0:
             self.root.after(1000, self.update_label) ## one second
 
+def giftedVicious():
+    if has_giftedVicious == 1:
+        for list in all_list:
+            list[2] = (list[2] * .85)
+
+
 def startThreads():
+
+    # Check if gifted vicious bee -15% reduction needs to happen
+    giftedVicious()
     # Create new threads
     '''   BOOSTERS  '''
     thread0 = myThread(4, "Wealth Clock", 1, wealth_list[2])
@@ -620,6 +642,7 @@ def startThreads():
     thread51 = myThread(1, "Sprout Summoner", 1, sprout_list[2])
     # Start new Threads
     '''   BOOSTERS  '''
+
     thread0.start()
     thread1.start()
     thread2.start()
@@ -689,5 +712,4 @@ def doubleTimer():
     PB = ProgressBar(root)
     root.mainloop()
 
-startThreads()
 doubleTimer()
