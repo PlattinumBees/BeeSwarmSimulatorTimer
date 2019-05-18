@@ -295,7 +295,11 @@ class ProgressBar():
         """ a separate process to show the timer's threads in a GUI
         """
         top2=tk.Toplevel(self.root, bg="lightyellow")
+<<<<<<< HEAD
         top2.geometry("485x753+900+300")
+=======
+        top2.geometry("485x695+900+300")
+>>>>>>> 63464b1feea5ee26736dab9fef4d0dbe46ce6bbc
         '''   BOOSTERS  '''
         # Wealth Clock
         self.label_wealth = tk.IntVar()
