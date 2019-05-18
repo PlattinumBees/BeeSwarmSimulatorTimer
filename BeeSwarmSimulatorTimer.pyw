@@ -59,6 +59,9 @@ all_list = [wealth_list,field_list,blueberry_list,red_field_list,jelly_list,ant_
           werewolf_list, snail_list,cavemonster_list,king_list,tunnel_list, stick_list,brownbear_list,blackbear_list,
           honeystorm_list, sprout_list]
 
+mob_list = [ladybug_list, rhino_list, spider_list, mantis_list, scorpion_list,
+          werewolf_list, snail_list,cavemonster_list,king_list,tunnel_list, stick_list]
+
 has_giftedVicious = 0
 
 class myThread (threading.Thread):
@@ -295,11 +298,7 @@ class ProgressBar():
         """ a separate process to show the timer's threads in a GUI
         """
         top2=tk.Toplevel(self.root, bg="lightyellow")
-<<<<<<< HEAD
         top2.geometry("485x753+900+300")
-=======
-        top2.geometry("485x695+900+300")
->>>>>>> 63464b1feea5ee26736dab9fef4d0dbe46ce6bbc
         '''   BOOSTERS  '''
         # Wealth Clock
         self.label_wealth = tk.IntVar()
@@ -603,7 +602,7 @@ class ProgressBar():
 
 def giftedVicious():
     if has_giftedVicious == 1:
-        for list in all_list:
+        for list in mob_list:
             list[2] = (list[2] * .85)
 
 
